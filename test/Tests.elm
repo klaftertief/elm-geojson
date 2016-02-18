@@ -9,14 +9,36 @@ import Json.Encode exposing (encode)
 import Result
 
 
+_ =
+  Debug.log
+    "Ladida"
+    (let
+      result =
+        decodeFromString JsonGeometry.featureCollection
+     in
+      case result of
+        Result.Ok geoJson ->
+          encode 0 <| GeoJson.encode geoJson
+
+        Result.Err _ ->
+          encode 0 <| GeoJson.encode Geometry.point
+    )
+
+
 decodeFromString : String -> Result.Result String GeoJson
 decodeFromString string =
   decodeString GeoJson.decode string
 
 
+assertDecode : Result.Result String GeoJson -> ElmTest.Assertion
+assertDecode result =
+  assert
+    <| case result of
+        Result.Ok _ ->
+          True
 
---_ =
---  Debug.log "DECODE???" (decodeFromString JsonGeometry.multiLineString)
+        Result.Err _ ->
+          False
 
 
 encoding : Test
@@ -27,6 +49,12 @@ encoding =
         <| assertEqual
             (encode 0 <| GeoJson.encode Geometry.point)
             JsonGeometry.point
+    , test "GeometryCollection (Just Result)"
+        <| assertDecode (decodeFromString JsonGeometry.geometryCollection)
+    , test "Feature (Just Result)"
+        <| assertDecode (decodeFromString JsonGeometry.feature)
+    , test "FeatureCollection (Just Result)"
+        <| assertDecode (Debug.log "???" <| decodeFromString JsonGeometry.featureCollection)
     ]
 
 

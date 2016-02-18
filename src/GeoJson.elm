@@ -47,6 +47,9 @@ decodeType tipe =
     "Feature" ->
       Decode.object1 Feature Feature.decode
 
+    "FeatureCollection" ->
+      Decode.object1 Feature Feature.decode
+
     _ ->
       Decode.object1 Geometry Geometry.decode
 
