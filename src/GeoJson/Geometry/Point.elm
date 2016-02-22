@@ -1,4 +1,4 @@
-module GeoJson.Geometry.Point (Point, getPosition, fromLonLat, fromLonLatAlt, fromEastingNorthing, fromEastingNorthingAlt, fromPosition, encode, decode) where
+module GeoJson.Geometry.Point (Point, getPosition, fromLonLat, fromLonLatAlt, fromList, fromEastingNorthing, fromEastingNorthingAlt, fromPosition, encode, decode) where
 
 import GeoJson.Geometry.Position as Position exposing (Position)
 import Json.Decode as Decode exposing ((:=))
@@ -26,6 +26,11 @@ fromLonLatAlt lon lat alt =
   P (Position.fromLonLatAlt lon lat alt)
 
 
+fromList : List Float -> Point
+fromList =
+  P << Position.fromList
+
+
 fromEastingNorthing : Float -> Float -> Point
 fromEastingNorthing easting northing =
   P (Position.fromEastingNorthing easting northing)
@@ -37,8 +42,8 @@ fromEastingNorthingAlt easting northing alt =
 
 
 fromPosition : Position -> Point
-fromPosition position =
-  P position
+fromPosition =
+  P
 
 
 encode : Point -> Encode.Value

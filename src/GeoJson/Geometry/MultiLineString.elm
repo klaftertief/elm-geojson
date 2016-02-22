@@ -1,4 +1,4 @@
-module GeoJson.Geometry.MultiLineString (MultiLineString, encode, decode) where
+module GeoJson.Geometry.MultiLineString (MultiLineString, fromPositionsList, encode, decode) where
 
 import GeoJson.Geometry.Position as Position exposing (Position)
 import Json.Decode as Decode exposing ((:=))
@@ -9,22 +9,29 @@ type MultiLineString
   = MLS (List (List Position))
 
 
-getPositionsList : MultiLineString -> List (List Position)
-getPositionsList multiLineString =
+getPositions : MultiLineString -> List (List Position)
+getPositions multiLineString =
   case multiLineString of
     MLS positionsList ->
       positionsList
+
+
+fromPositionsList : List (List Position) -> MultiLineString
+fromPositionsList =
+  MLS
 
 
 encode : MultiLineString -> Encode.Value
 encode multiLineString =
   Encode.object
     [ ( "type", Encode.string "MultiLineString" )
-    , ( "coordinates"
-      , Encode.list
-          <| List.map Position.encodeList (getPositionsList multiLineString)
-      )
+    , ( "coordinates", encodeCoordinates (getPositions multiLineString) )
     ]
+
+
+encodeCoordinates : List (List Position) -> Encode.Value
+encodeCoordinates coordinates =
+  Encode.list (List.map Position.encodeList coordinates)
 
 
 decode : Decode.Decoder MultiLineString

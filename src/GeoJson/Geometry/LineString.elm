@@ -17,8 +17,8 @@ getPositions lineString =
 
 
 fromPositions : List Position -> LineString
-fromPositions positions =
-  LS positions
+fromPositions =
+  LS
 
 
 encode : LineString -> Encode.Value

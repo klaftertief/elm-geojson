@@ -1,4 +1,4 @@
-module GeoJson.Geometry.MultiPolygon (MultiPolygon, encode, decode) where
+module GeoJson.Geometry.MultiPolygon (MultiPolygon, fromPositionsList, encode, decode) where
 
 import GeoJson.Geometry.Polygon as Polygon
 import GeoJson.Geometry.Position as Position exposing (Position)
@@ -15,6 +15,11 @@ getPositions multiPolygon =
   case multiPolygon of
     MP positions ->
       positions
+
+
+fromPositionsList : List (List (List Position)) -> MultiPolygon
+fromPositionsList =
+  MP
 
 
 encode : MultiPolygon -> Encode.Value

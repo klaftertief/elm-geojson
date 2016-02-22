@@ -18,8 +18,8 @@ getPositions multiPoint =
 
 
 fromPositions : List Position -> MultiPoint
-fromPositions positions =
-  MP positions
+fromPositions =
+  MP
 
 
 merge : List Point -> MultiPoint

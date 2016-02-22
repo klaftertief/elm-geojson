@@ -1,4 +1,4 @@
-module GeoJson.Geometry.Position (Position, fromLonLat, fromLonLatAlt, fromEastingNorthing, fromEastingNorthingAlt, encode, encodeList, decode) where
+module GeoJson.Geometry.Position (Position, fromLonLat, fromLonLatAlt, fromList, fromEastingNorthing, fromEastingNorthingAlt, encode, encodeList, decode) where
 
 import Json.Decode as Decode
 import Json.Encode as Encode
@@ -39,6 +39,19 @@ fromLonLat lon lat =
 fromLonLatAlt : Float -> Float -> Float -> Position
 fromLonLatAlt lon lat alt =
   LonLatAlt lon lat alt
+
+
+fromList : List Float -> Position
+fromList list =
+  case list of
+    lon :: lat :: alt :: tail ->
+      fromLonLatAlt lon lat alt
+
+    lon :: lat :: tail ->
+      fromLonLat lon lat
+
+    _ ->
+      Debug.crash "A position needs at least a lon and a lat."
 
 
 fromEastingNorthing : Float -> Float -> Position

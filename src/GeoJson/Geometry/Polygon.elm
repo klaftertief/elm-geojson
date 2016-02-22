@@ -1,4 +1,4 @@
-module GeoJson.Geometry.Polygon (Polygon, encode, encodeCoordinates, decode) where
+module GeoJson.Geometry.Polygon (Polygon, fromPositionsList, encode, encodeCoordinates, decode) where
 
 import GeoJson.Geometry.Position as Position exposing (Position)
 import Json.Decode as Decode exposing ((:=))
@@ -6,7 +6,15 @@ import Json.Encode as Encode
 
 
 type Polygon
-  = P (List (List Position))
+  = P (List LinearRing)
+
+
+type alias LinearRing =
+  List Position
+
+
+
+-- TODO: add factory and validations for LinearRing
 
 
 getPositions : Polygon -> List (List Position)
@@ -14,6 +22,11 @@ getPositions polygon =
   case polygon of
     P positionsList ->
       positionsList
+
+
+fromPositionsList : List (List Position) -> Polygon
+fromPositionsList =
+  P
 
 
 encode : Polygon -> Encode.Value

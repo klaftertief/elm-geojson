@@ -1,10 +1,10 @@
-module GeoJson (GeoJson, encode, decode, makePoint) where
+module GeoJson (GeoJson, encode, decode, point) where
 
 {-| GeoJSON utilities for Elm.
 
 # Types
 
-@docs GeoJson, encode, decode, makePoint
+@docs GeoJson, encode, decode, point
 
 -}
 
@@ -56,6 +56,6 @@ decodeType tipe =
 
 {-|
 -}
-makePoint : Float -> Float -> GeoJson
-makePoint lon lat =
-  Geometry (Geometry.makePoint lon lat)
+point : List Float -> GeoJson
+point =
+  Geometry << Geometry.point
